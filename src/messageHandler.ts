@@ -76,10 +76,10 @@ export async function handleMessage(message: Message) {
         if(isNumber(command[3])){
           const result = await searchGradeByWeek(Number(command[3]));
           if(result.length == 0){
-            message.reply("None student all problems accept this week!");
+            message.reply(`week${command[3]}\nNone student all problems accept this week!`);
           }
           else{
-            let mes = "";
+            let mes = `week${command[3]}\n`;
             for(const student of result){
               const date = student.date;
               mes += `${date.getFullYear()}-${Number(date.getMonth()) + 1}-${date.getDate()}  ${student.id}  ${student.name}\n`;
