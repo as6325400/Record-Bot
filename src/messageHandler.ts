@@ -16,7 +16,10 @@ export async function handleMessage(message: Message) {
       const nowDate = new Date();
 
       // 只有上課日能新增
-      if(nowDate.getDay() != Number(process.env.CLASS_DAY)) return;
+      if(nowDate.getDay() != Number(process.env.CLASS_DAY)){
+        message.reply("Today is not class day!");
+        return;
+      }
       if(!isNumber(command[2])) return;
       
       const student = await searchStudent(command[2]);

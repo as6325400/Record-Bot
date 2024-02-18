@@ -19,7 +19,6 @@ type DateToWeekMap = {
 
 export const dateToWeek: DateToWeekMap = {
   2 : {
-    18: 0,
     19: 1,
     26: 2 
   },

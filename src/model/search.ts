@@ -34,7 +34,7 @@ export async function searchStudentById (stuid : string) : Promise<string | null
   const db = await database;
   const command = "SELECT name FROM `user` WHERE username = ?;";
   const result = await db.query(command, [stuid]);
-  if(result.length != 0) return null; 
+  if(result.length == 0) return null; 
   return result[0].name;
 }
 
