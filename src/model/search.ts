@@ -16,7 +16,7 @@ export async function searchStudent (id : string) : Promise<Iuser | null>{
 
 export async function searchGradeByWeek (week : number) : Promise<Igrade[]>{
   const db = await database;
-  const command = "SELECT name, stuid as id, date FROM `bonus` where week = ?;";
+  const command = "SELECT name, stuid as id, date FROM `bonus` where week = ? AND grade = 1;";
   const result : Igrade[] = await db.query<Igrade[]>(command, [week]);
   return result;
 }

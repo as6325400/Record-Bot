@@ -4,6 +4,7 @@ import { searchStudent, searchGradeByWeek, searchGradeByStudent, searchStudentBy
 import { dateToWeek } from "./model/general";
 import { logger } from "./model/log";
 import { addBonus, bonusExist } from "./model/add";
+import { deleteAllStudentByWeek, deleteOneStudentByWeek} from "./model/update";
 
 export async function handleMessage(message: Message) {
   const command : string[] = message.content.split(" ");
@@ -66,8 +67,9 @@ export async function handleMessage(message: Message) {
       }
 
     }
-    else if(command.length == 4){
+    else if(command.length >= 4){
       if(command[2] == "-t"){
+        if(command.length != 4) return;
         if(isNumber(command[3])){
           const result = await searchGradeByWeek(Number(command[3]));
           if(result.length == 0){
@@ -86,6 +88,7 @@ export async function handleMessage(message: Message) {
 
       else if(command[2] == "-s"){
         // 查這位學生總共加分次數
+        if(command.length != 4) return;
         if(isNumber(command[3])){
           const name = await searchStudentById(command[3]);
           if(name == null){
@@ -94,6 +97,21 @@ export async function handleMessage(message: Message) {
           }
           const result = await searchGradeByStudent(command[3]);
           message.reply(`${command[3]} ${name} total get ${result} times!\n`);
+        }
+      }
+
+      else if(command[2] == "-r"){
+        // month 是 0 index
+        const nowDate = new Date();
+        const month = Number(nowDate.getMonth() + 1);
+        const day = nowDate.getDate();
+        if(isNumber(command[3])){
+          await deleteOneStudentByWeek(dateToWeek[month][day], command[3]);
+        }
+        else if(command[3] == "all"){
+          if(command[4] == "-f"){
+            await deleteAllStudentByWeek(dateToWeek[month][day]);
+          }
         }
       }
     }
