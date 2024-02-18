@@ -99,19 +99,20 @@ export async function handleMessage(message: Message) {
           message.reply(`${command[3]} ${name} total get ${result} times!\n`);
         }
       }
-
-      else if(command[2] == "-r"){
-        // month 是 0 index
-        const nowDate = new Date();
-        const month = Number(nowDate.getMonth() + 1);
-        const day = nowDate.getDate();
-        if(isNumber(command[3])){
-          await deleteOneStudentByWeek(dateToWeek[month][day], command[3]);
-        }
-        else if(command[3] == "all"){
-          if(command[4] == "-f"){
-            await deleteAllStudentByWeek(dateToWeek[month][day]);
-          }
+    }
+  }
+  else if(command[1] == "remove"){
+    if(command[2] == "-r"){
+      // month 是 0 index
+      const nowDate = new Date();
+      const month = Number(nowDate.getMonth() + 1);
+      const day = nowDate.getDate();
+      if(isNumber(command[3])){
+        await deleteOneStudentByWeek(dateToWeek[month][day], command[3]);
+      }
+      else if(command[3] == "all"){
+        if(command[4] == "-f"){
+          await deleteAllStudentByWeek(dateToWeek[month][day]);
         }
       }
     }
