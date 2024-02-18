@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
 import { isNumber } from "./model/rg";
-import { searchStudent } from "./model/search"; 
+// import { searchStudent } from "./model/search"; 
 
 export async function handleMessage(message: Message) {
   const command : string[] = message.content.split(" ");
@@ -11,10 +11,10 @@ export async function handleMessage(message: Message) {
     if (command.length <= 2) return;
     if (command.length == 3) {
       if(!isNumber(command[2])) return;
-      const result = await searchStudent(command[2]);
-      if(result != null) {
+      // const result = await searchStudent(command[2]);
+      // if(result != null) {
         
-      }
+      // }
     }
   }
 }
