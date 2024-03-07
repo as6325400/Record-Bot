@@ -1,25 +1,25 @@
 import { Message } from "discord.js";
 import { isNumber } from "./model/rg";
-import { searchStudent, searchGradeByWeek, searchGradeByStudent, searchStudentById } from "./model/search"; 
-import { dateToWeek } from "./model/general";
+import { searchStudent, searchGradeByWeek, searchGradeByStudent, searchStudentById, searchGradeByWeekOffice } from "./model/search"; 
+import { dateToWeek, dateToWeekOffice } from "./model/general";
 import { logger } from "./model/log";
-import { addBonus, bonusExist } from "./model/add";
-import { deleteAllStudentByWeek, deleteOneStudentByWeek} from "./model/update";
+import { addBonus, bonusExist, addOffice } from "./model/add";
+import { deleteAllStudentByWeek, deleteOneStudentByWeek, deleteOneStudentByWeekOffice} from "./model/update";
 
 export async function handleMessage(message: Message) {
   const command : string[] = message.content.split(" ");
   if (message.author.bot || command[0] != process.env.BOT_PREFIX!) return;
   if (command.length < 2) return;
   if (command[1] == "add"){
+    const nowDate = new Date();
+    const canEditDay : Number[] = process.env.CLASS_DAY!.split(',').map(Number);
+    // 只有上課日能新增
+    if(canEditDay.includes(nowDate.getDay()) === false){
+      message.reply("Today is not class and office hour day!");
+      return;
+    }
     if (command.length <= 2) return;
     if (command.length == 3) {
-      const nowDate = new Date();
-
-      // 只有上課日能新增
-      if(nowDate.getDay() != Number(process.env.CLASS_DAY)){
-        message.reply("Today is not class day!");
-        return;
-      }
       if(!isNumber(command[2])) return;
       
       const student = await searchStudent(command[2]);
@@ -54,6 +54,30 @@ export async function handleMessage(message: Message) {
         message.reply("No search this student in database, Please check Student Id is correct!");
       }
     }
+    else if(command.length == 4){
+      if(command[2] != '-o') return;
+      if(!isNumber(command[3])) return;
+      
+      const student = await searchStudent(command[3]);
+      if(student!= null) {
+        const month = Number(nowDate.getMonth() + 1);
+        const day = nowDate.getDate();
+        if(dateToWeekOffice[month]?.[day] === undefined){
+          logger.info(`semester ending! --${nowDate}`);
+          return;
+        }
+
+        if(await addOffice(student, dateToWeekOffice[month][day])){
+          message.reply(`Success add ${student.id} ${student.name} this week!`);
+          return;
+        }
+
+        else{
+          message.reply("add officehour error!");
+        }
+
+      }
+    }
   }
   else if(command[1] == "show"){
     if(command.length == 3) {
@@ -77,6 +101,24 @@ export async function handleMessage(message: Message) {
           const result = await searchGradeByWeek(Number(command[3]));
           if(result.length == 0){
             message.reply(`week${command[3]}\nNone student all problems accept this week!`);
+          }
+          else{
+            let mes = `week${command[3]}\n`;
+            for(const student of result){
+              const date = student.date;
+              mes += `${date.getFullYear()}-${Number(date.getMonth()) + 1}-${date.getDate()}  ${student.id}  ${student.name}\n`;
+            }
+            message.reply(mes);
+          }
+        }
+      }
+
+      if(command[2] == "-to"){
+        if(command.length != 4) return;
+        if(isNumber(command[3])){
+          const result = await searchGradeByWeekOffice(Number(command[3]));
+          if(result.length == 0){
+            message.reply(`week${command[3]}\nNone student to officehour this week!`);
           }
           else{
             let mes = `week${command[3]}\n`;
@@ -117,6 +159,15 @@ export async function handleMessage(message: Message) {
         if(command[4] == "-f"){
           await deleteAllStudentByWeek(dateToWeek[month][day]);
         }
+      }
+    }
+    if(command[2] == "-o"){
+      // month 是 0 index
+      const nowDate = new Date();
+      const month = Number(nowDate.getMonth() + 1);
+      const day = nowDate.getDate();
+      if(isNumber(command[3])){
+        await deleteOneStudentByWeekOffice(dateToWeekOffice[month][day], command[3]);
       }
     }
   }

@@ -15,6 +15,19 @@ export async function addBonus(student : Iuser, week : number) : Promise<boolean
   }
 }
 
+export async function addOffice(student : Iuser, week : number) : Promise<boolean> {
+  try{
+    const db = await database;
+    const command = "INSERT INTO officehour (stuid, name, week) VALUES (?, ?, ?);";
+    await db.query(command, [student.id, student.name, week]);
+    return true;
+  }
+  catch(err){
+    logger.info(`${err} --${new Date()}`);
+    return false;
+  }
+}
+
 export async function bonusExist(student : Iuser, week : number) : Promise<boolean | undefined> {
   try{
     const db = await database;

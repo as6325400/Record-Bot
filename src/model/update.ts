@@ -14,3 +14,10 @@ export async function deleteOneStudentByWeek(week : number, stuid : string) : Pr
   await db.query(command, [week, stuid]);
   return;
 }
+
+export async function deleteOneStudentByWeekOffice(week : number, stuid : string) : Promise<void> {
+  const db = await database;
+  const command = "UPDATE `officehour` SET `grade` = '0' WHERE week = ? AND stuid = ?";
+  await db.query(command, [week, stuid]);
+  return;
+}

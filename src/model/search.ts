@@ -21,6 +21,13 @@ export async function searchGradeByWeek (week : number) : Promise<Igrade[]>{
   return result;
 }
 
+export async function searchGradeByWeekOffice (week : number) : Promise<Igrade[]>{
+  const db = await database;
+  const command = "SELECT name, stuid as id, date FROM `officehour` where week = ? AND grade = 1;";
+  const result : Igrade[] = await db.query<Igrade[]>(command, [week]);
+  return result;
+}
+
 
 
 export async function searchGradeByStudent (stuid : string) : Promise<number>{

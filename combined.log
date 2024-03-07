@@ -1,3 +1,8 @@
 {"level":"info","message":"No search this student in database, Please check Student Id is correct!  --Sun Feb 18 2024 19:42:49 GMT+0800 (Taipei Standard Time)","timestamp":"2024-02-18T11:42:49.752Z"}
 {"level":"info","message":"No search this student in database, Please check Student Id is correct!  --Sun Feb 18 2024 19:52:58 GMT+0800 (Taipei Standard Time)","timestamp":"2024-02-18T11:52:58.451Z"}
 {"level":"info","message":"No search this student in database, Please check Student Id is correct!  --Mon Feb 19 2024 01:13:19 GMT+0800 (Taipei Standard Time)","timestamp":"2024-02-18T17:13:19.239Z"}
+{"level":"info","message":"No search this student in database, Please check Student Id is correct!  --Thu Mar 07 2024 14:18:39 GMT+0800 (Taipei Standard Time)","timestamp":"2024-03-07T06:18:39.849Z"}
+{"level":"info","message":"No search this student in database, Please check Student Id is correct!  --Thu Mar 07 2024 14:19:01 GMT+0800 (Taipei Standard Time)","timestamp":"2024-03-07T06:19:01.449Z"}
+{"level":"info","message":"No search this student in database, Please check Student Id is correct!  --Thu Mar 07 2024 14:19:58 GMT+0800 (Taipei Standard Time)","timestamp":"2024-03-07T06:19:58.153Z"}
+{"level":"info","message":"No search this student in database, Please check Student Id is correct!  --Thu Mar 07 2024 14:20:25 GMT+0800 (Taipei Standard Time)","timestamp":"2024-03-07T06:20:25.782Z"}
+{"level":"info","message":"SqlError: (conn=301965, no: 1048, SQLState: 23000) Column 'week' cannot be null\nsql: INSERT INTO officehour (stuid, name, week) VALUES (?, ?, ?); - parameters:['412430044','周雍峻',undefined] --Thu Mar 07 2024 14:23:56 GMT+0800 (Taipei Standard Time)","timestamp":"2024-03-07T06:23:56.980Z"}
