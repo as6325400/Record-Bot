@@ -12,7 +12,7 @@ export async function handleMessage(message: Message) {
   if (command.length < 2) return;
   if (command[1] == "add"){
     const nowDate = new Date();
-    const canEditDay : Number[] = process.env.CLASS_DAY!.split(',').map(Number);
+    const canEditDay : number[] = process.env.CLASS_DAY!.split(",").map(Number);
     // 只有上課日能新增
     if(canEditDay.includes(nowDate.getDay()) === false){
       message.reply("Today is not class and office hour day!");
@@ -55,7 +55,7 @@ export async function handleMessage(message: Message) {
       }
     }
     else if(command.length == 4){
-      if(command[2] != '-o') return;
+      if(command[2] != "-o") return;
       if(!isNumber(command[3])) return;
       
       const student = await searchStudent(command[3]);
